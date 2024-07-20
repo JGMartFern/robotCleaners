@@ -1,12 +1,12 @@
-#Robot Cleaners Application
+# Robot Cleaners Application
 
-##Overview
+## Overview
 This application is designed to follow the movement and final positions of robot cleaners on a grid according to certain
 instructions. It is implemented using Kotlin and follows Hexagonal Architecture to an extent, given the simplicity of
 the application.
 
-##Architecture
-###Hexagonal Architecture
+## Architecture
+### Hexagonal Architecture
 The application follows Hexagonal Architecture. I have left aside certain aspects of it due to the application being
 simple enough, namely the Infrastructure (since we don't have any data persistance) and the Application (since we don't
 depend on REST APIs or any other external sources). Thus, we are left with the following elements of Hexagonal
@@ -16,7 +16,7 @@ Architecture:
 - **Adapters**: Handle interaction with the outside world (in our case, this would be reading input from files and 
 generating an output from it).
 
-###About the Domain Model
+### About the Domain Model
 The application employs a rich domain model to encapsulate business logic within the domain objects themselves. This
 approach ensures certain things:
 
@@ -26,7 +26,7 @@ understand and modify.
 - **Flexibility**: Changes in business logic are localized within the domain layer, reducing the impact on other parts 
 of the application.
 
-##How to Run
+## How to Run
 
 First, build the project with the following command:
 `./gradlew build`
@@ -40,7 +40,7 @@ For running the tests, you can use the following command:
 The application will be running with a sample set of instructions. Please read Assumptions and Limitations for a better
 understanding of how the instructions work, so you can modify them and play with them a little to test the application.
 
-##Testing
+## Testing
 The application includes unit tests to validate the functionality of the RobotCleanerService. The tests cover the
 following cases:
 
@@ -48,7 +48,7 @@ following cases:
 - Handling of empty input and invalid cases.
 - Validation of business rules and constraints.
 
-##Assumptions and Limitations
+## Assumptions and Limitations
 Input Specifications: For an example of input specificacions, please check sampleInstructions.txt, a file located in the
 resources folder of the project. With it, we can assume certain things:
 - The first line of the commands will always contain the dimensions of the grid that the robot is cleaning.
@@ -61,5 +61,5 @@ account its current facing).
 
 Error Handling: The application throws exceptions for invalid input formats or missing commands.
 
-##Author
+## Author
 [Juan Gabriel Martínez]
