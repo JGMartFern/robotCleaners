@@ -3,7 +3,7 @@ package com.example.robotCleaners
 import com.example.robotCleaners.adapters.RobotCleanerService
 import com.example.robotCleaners.application.RobotCleanerController
 
-fun main(args: Array<String>) {
+fun main() {
 	val controller = RobotCleanerController()
 	val robotCleanerService = RobotCleanerService(controller)
 

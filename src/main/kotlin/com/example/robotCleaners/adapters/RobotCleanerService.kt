@@ -36,7 +36,7 @@ class RobotCleanerService(private val controller: RobotCleanerController) {
                 positionInfo[0].toIntOrNull() ?: throw IllegalArgumentException("Invalid x coordinate"),
                 positionInfo[1].toIntOrNull() ?: throw IllegalArgumentException("Invalid y coordinate")
             )
-            val initialDirection = Direction.values().find { it.name == positionInfo[2] }
+            val initialDirection = Direction.entries.find { it.name == positionInfo[2] }
                 ?: throw IllegalArgumentException("Invalid direction")
 
             val robot = RobotCleaner(initialPosition, initialDirection)
