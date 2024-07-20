@@ -22,10 +22,6 @@ class RobotCleanerService(private val controller: RobotCleanerController) {
         var i = 1
         while (i < lines.size) {
 
-            if (i >= lines.size) {
-                throw IllegalArgumentException("Incomplete instructions")
-            }
-
             val positionInfo = lines.getOrNull(i)?.split(" ")
 
             if (positionInfo == null || positionInfo.size < 3) {
