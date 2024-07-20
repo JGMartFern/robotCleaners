@@ -1,23 +1,15 @@
 package com.example.robotCleaners
 
 import com.example.robotCleaners.adapters.RobotCleanerService
-import com.example.robotCleaners.application.RobotCleanerController
+import java.io.File
 
 fun main() {
-	val controller = RobotCleanerController()
-	val robotCleanerService = RobotCleanerService(controller)
+    val input = File("src/main/resources/static/sampleInstructions.txt").readText()
 
-	val fileName = "static/sampleInstructions.txt"
-	val inputStream = object {}.javaClass.classLoader.getResourceAsStream(fileName)
+    val service = RobotCleanerService()
 
-	if (inputStream == null) {
-		println("The file could not be found")
-		return
-	}
+    val robots = service.processInstructions(input)
+    val output = service.generateOutput(robots)
 
-	val inputString = inputStream.bufferedReader().use { it.readText() }
-	val robots = robotCleanerService.processInstructions(inputString)
-	val output = robotCleanerService.generateOutput(robots)
-
-	println(output)
+    println(output)
 }

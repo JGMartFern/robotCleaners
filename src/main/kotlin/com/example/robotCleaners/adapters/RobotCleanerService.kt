@@ -1,19 +1,13 @@
 package com.example.robotCleaners.adapters
 
-import com.example.robotCleaners.application.RobotCleanerController
 import com.example.robotCleaners.domain.Direction
 import com.example.robotCleaners.domain.Position
 import com.example.robotCleaners.domain.RobotCleaner
 
-class RobotCleanerService(private val controller: RobotCleanerController) {
+class RobotCleanerService {
 
     fun processInstructions(input: String): List<RobotCleaner> {
         val lines = input.lines()
-
-        if (lines.isEmpty()) {
-            throw IllegalArgumentException("Instructions are empty")
-        }
-
         val gridSize = lines[0].split(" ").map { it.toInt() }
         val limitX = gridSize[0]
         val limitY = gridSize[1]
@@ -21,33 +15,36 @@ class RobotCleanerService(private val controller: RobotCleanerController) {
 
         var i = 1
         while (i < lines.size) {
-
-            val positionInfo = lines.getOrNull(i)?.split(" ")
-
-            if (positionInfo == null || positionInfo.size < 3) {
-                throw IllegalArgumentException("Invalid position info format at line $i")
+            if (i + 1 >= lines.size) {
+                throw IllegalArgumentException("Missing commands for robot at line ${i + 1}")
             }
 
-            val initialPosition = Position(
-                positionInfo[0].toIntOrNull() ?: throw IllegalArgumentException("Invalid x coordinate"),
-                positionInfo[1].toIntOrNull() ?: throw IllegalArgumentException("Invalid y coordinate")
-            )
-            val initialDirection = Direction.entries.find { it.name == positionInfo[2] }
-                ?: throw IllegalArgumentException("Invalid direction")
+            val positionInfo = lines[i].split(" ")
+            if (positionInfo.size < 3) {
+                throw IllegalArgumentException("Invalid position info format at line ${i + 1}")
+            }
 
-            val robot = RobotCleaner(initialPosition, initialDirection)
-
-            val commands = lines.getOrNull(i + 1)
-                ?: throw IllegalArgumentException("Missing commands for robot at line $i")
+            val initialPosition: Position
+            val initialDirection: Direction
 
             try {
-                controller.executeCommands(robot, commands, limitX, limitY)
+                initialPosition = Position(positionInfo[0].toInt(), positionInfo[1].toInt())
+                initialDirection = Direction.valueOf(positionInfo[2])
             } catch (e: IllegalArgumentException) {
-                println("Could not execute commands for robot ${robots.size+1}: ${e.message}")
+                if (positionInfo.size < 3) {
+                    throw IllegalArgumentException("Invalid position info format at line ${i + 1}")
+                } else {
+                    throw IllegalArgumentException("Invalid direction at line ${i + 1}")
+                }
             }
+
+            val robot = RobotCleaner(initialPosition, initialDirection)
+            val commands = lines[i + 1]
+            robot.executeCommands(commands, limitX, limitY)
             robots.add(robot)
             i += 2
         }
+
         return robots
     }
 
@@ -57,6 +54,6 @@ class RobotCleanerService(private val controller: RobotCleanerController) {
             robots.forEach { robot ->
                 appendLine("${robot.position.x} ${robot.position.y} ${robot.direction}")
             }
-        }
+        }.trim()
     }
 }

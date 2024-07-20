@@ -2,33 +2,29 @@ package com.example.robotCleaners.domain
 
 data class RobotCleaner(var position: Position, var direction: Direction) {
 
-    fun move(limitX: Int, limitY: Int) {
-        val newPosition = when (direction) {
-            Direction.N -> position.copy(y = position.y + 1)
-            Direction.E -> position.copy(x = position.x + 1)
-            Direction.S -> position.copy(y = position.y - 1)
-            Direction.W -> position.copy(x = position.x - 1)
-        }
-        if (newPosition.x in 0..limitX && newPosition.y in 0..limitY) {
-            position = newPosition
-        }
-    }
-
-    fun turnLeft() {
-        direction = when (direction) {
-            Direction.N -> Direction.W
-            Direction.W -> Direction.S
-            Direction.S -> Direction.E
-            Direction.E -> Direction.N
+    fun executeCommands(commands: String, limitX: Int, limitY: Int) {
+        for (command in commands) {
+            when (command) {
+                'L' -> turnLeft()
+                'R' -> turnRight()
+                'M' -> move(limitX, limitY)
+                else -> throw IllegalArgumentException("Invalid command: $command")
+            }
         }
     }
 
-    fun turnRight() {
-        direction = when (direction) {
-            Direction.N -> Direction.E
-            Direction.E -> Direction.S
-            Direction.S -> Direction.W
-            Direction.W -> Direction.N
+    private fun turnLeft() {
+        direction = direction.left()
+    }
+
+    private fun turnRight() {
+        direction = direction.right()
+    }
+
+    private fun move(limitX: Int, limitY: Int) {
+        position.move(direction)
+        if (!position.isWithinBounds(limitX, limitY)) {
+            throw IllegalArgumentException("Position out of bounds: $position")
         }
     }
 }

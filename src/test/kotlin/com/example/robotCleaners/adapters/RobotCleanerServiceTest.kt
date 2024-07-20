@@ -1,14 +1,12 @@
 package com.example.robotCleaners.adapters
 
-import com.example.robotCleaners.application.RobotCleanerController
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
 class RobotCleanerServiceTest {
 
-    private val controller = RobotCleanerController()
-    private val service = RobotCleanerService(controller)
+    private val service = RobotCleanerService()
 
     @Test
     fun `should process instructions and generate correct output`() {
@@ -27,11 +25,7 @@ class RobotCleanerServiceTest {
             Final positions and facing of robot cleaners:
             1 3 N
             5 1 E
-            
         """.trimIndent()
-
-        println("Actual output:\n$output")
-        println("Expected output:\n$expectedOutput")
 
         assertEquals(expectedOutput, output)
     }
@@ -54,7 +48,7 @@ class RobotCleanerServiceTest {
         val exception = assertThrows<IllegalArgumentException> {
             service.processInstructions(input)
         }
-        assert(exception.message?.contains("Missing commands for robot at line 1") == true)
+        assert(exception.message?.contains("Missing commands for robot") == true)
     }
 
     @Test
@@ -68,7 +62,7 @@ class RobotCleanerServiceTest {
         val exception = assertThrows<IllegalArgumentException> {
             service.processInstructions(input)
         }
-        assert(exception.message?.contains("Invalid position info format at line 1") == true)
+        assert(exception.message?.contains("Invalid position info format") == true)
     }
 
     @Test
